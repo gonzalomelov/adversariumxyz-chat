@@ -45,17 +45,17 @@ export default function Agent() {
 
         <div className="flex w-full lg:w-2/3">
           <Chat getTokens={getTokens} getNFTs={getNFTs} />
-          <Stream className="hidden" />
+          {/* <Stream className="hidden" /> */}
         </div>
 
-        <div
+        {/* <div
           className={`
           ${
             isMobileChatOpen ? 'translate-y-0' : 'translate-x-full'
           } fixed top-0 z-8 flex h-full w-full flex-col overflow-y-auto bg-black pt-[100px] transition-transform duration-300 md:hidden`}
         >
           <Stream className="flex w-full flex-col" />
-        </div>
+        </div> */}
       </div>
     </div>
   );
