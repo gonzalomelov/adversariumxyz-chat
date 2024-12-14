@@ -5,10 +5,12 @@ import useGetTokens from '../hooks/useGetTokens';
 import AgentAssets from './AgentAssets';
 import AgentProfile from './AgentProfile';
 import Chat from './Chat';
+import { useAgentParams } from '../hooks/useAgentParams';
 // import Navbar from './Navbar';
 // import Stream from './Stream';
 
 export default function Agent() {
+  const { conversationId } = useAgentParams();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
 
@@ -44,7 +46,11 @@ export default function Agent() {
         </div>
 
         <div className="flex w-full lg:w-2/3">
-          <Chat getTokens={getTokens} getNFTs={getNFTs} />
+          <Chat 
+            getTokens={getTokens} 
+            getNFTs={getNFTs} 
+            conversationId={conversationId}
+          />
           {/* <Stream className="hidden" /> */}
         </div>
 

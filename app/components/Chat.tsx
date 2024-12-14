@@ -2,7 +2,7 @@ import { cn } from '@coinbase/onchainkit/theme';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useChat from '../hooks/useChat';
 import type { AgentMessage, StreamEntry } from '../types';
-import { generateUUID, markdownToPlainText } from '../utils';
+import { markdownToPlainText } from '../utils';
 import { API_URL } from '../config';
 import ChatInput from './ChatInput';
 import StreamItem from './StreamItem';
@@ -11,6 +11,7 @@ type ChatProps = {
   className?: string;
   getNFTs: () => void;
   getTokens: () => void;
+  conversationId: string;
 };
 
 interface ConversationMessage {
@@ -33,10 +34,9 @@ async function fetchConversationHistory(conversationId: string): Promise<Convers
   return data.messages;
 }
 
-export default function Chat({ className, getNFTs, getTokens }: ChatProps) {
+export default function Chat({ className, getNFTs, getTokens, conversationId }: ChatProps) {
   const [userInput, setUserInput] = useState('');
   const [streamEntries, setStreamEntries] = useState<StreamEntry[]>([]);
-  const conversationId = useMemo(() => generateUUID(), []);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 
   const [shouldRefetchNFTs, setShouldRefetchNFTs] = useState(false);
