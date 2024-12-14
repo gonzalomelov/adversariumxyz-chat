@@ -53,7 +53,7 @@ export default function ChatInput({
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
             className="h-24 w-full bg-black p-2 pr-10 text-gray-300 placeholder-[#5788FA] placeholder-opacity-50 lg:h-36"
-            placeholder="How can I help?"
+            placeholder="Try your luck!"
             rows={1}
           />
           <button
@@ -70,14 +70,14 @@ export default function ChatInput({
         </div>
         <div className="flex w-full items-center justify-between gap-4 py-2">
           <div className="flex grow flex-col flex-wrap gap-2 overflow-x-auto text-xs lg:flex-row lg:text-sm">
-            <PremadeChatInput
+            {/* <PremadeChatInput
               setUserInput={setUserInput}
               text="What actions can you take?"
             />
             <PremadeChatInput
               setUserInput={setUserInput}
               text="Deploy an NFT"
-            />
+            /> */}
           </div>
           <button
             type="submit"
