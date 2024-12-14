@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import type { Address } from 'viem';
-import useGetNFTs from '../hooks/useGetNFTs';
-import useGetTokens from '../hooks/useGetTokens';
-import AgentAssets from './AgentAssets';
+// import type { Address } from 'viem';
+// import useGetNFTs from '../hooks/useGetNFTs';
+// import useGetTokens from '../hooks/useGetTokens';
+// import AgentAssets from './AgentAssets';
 import AgentProfile from './AgentProfile';
 import Chat from './Chat';
 import { useAgentParams } from '../hooks/useAgentParams';
@@ -11,14 +11,17 @@ import { useAgentParams } from '../hooks/useAgentParams';
 
 export default function Agent() {
   const { conversationId } = useAgentParams();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
+  const [
+    isMobileMenuOpen,
+    // setIsMobileMenuOpen
+  ] = useState(false);
+  // const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
 
-  const [nfts, setNFTs] = useState<Address[]>([]);
-  const [tokens, setTokens] = useState<Address[]>([]);
+  // const [nfts, setNFTs] = useState<Address[]>([]);
+  // const [tokens, setTokens] = useState<Address[]>([]);
 
-  const { getTokens } = useGetTokens({ onSuccess: setTokens });
-  const { getNFTs } = useGetNFTs({ onSuccess: setNFTs });
+  // const { getTokens } = useGetTokens({ onSuccess: setTokens });
+  // const { getNFTs } = useGetNFTs({ onSuccess: setNFTs });
 
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-black font-mono text-[#5788FA]">
@@ -47,8 +50,8 @@ export default function Agent() {
 
         <div className="flex w-full lg:w-2/3">
           <Chat 
-            getTokens={getTokens} 
-            getNFTs={getNFTs} 
+            // getTokens={getTokens} 
+            // getNFTs={getNFTs} 
             conversationId={conversationId}
           />
           {/* <Stream className="hidden" /> */}

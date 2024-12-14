@@ -1,22 +1,22 @@
 import { type ChangeEvent, useCallback } from 'react';
 import SendSvg from '../svg/SendSvg';
 
-type PremadeChatInputProps = {
-  text: string;
-  setUserInput: (input: string) => void;
-};
+// type PremadeChatInputProps = {
+//   text: string;
+//   setUserInput: (input: string) => void;
+// };
 
-function PremadeChatInput({ text, setUserInput }: PremadeChatInputProps) {
-  return (
-    <button
-      type="submit"
-      onClick={() => setUserInput(text)}
-      className="w-full whitespace-nowrap rounded-sm border border-[#5788FA]/50 px-2 py-1 text-start text-[#5788FA] transition-colors hover:bg-zinc-900 hover:text-[#3D7BFF] lg:w-auto"
-    >
-      {text}
-    </button>
-  );
-}
+// function PremadeChatInput({ text, setUserInput }: PremadeChatInputProps) {
+//   return (
+//     <button
+//       type="submit"
+//       onClick={() => setUserInput(text)}
+//       className="w-full whitespace-nowrap rounded-sm border border-[#5788FA]/50 px-2 py-1 text-start text-[#5788FA] transition-colors hover:bg-zinc-900 hover:text-[#3D7BFF] lg:w-auto"
+//     >
+//       {text}
+//     </button>
+//   );
+// }
 
 export type ChatInputProps = {
   handleSubmit: (e: React.FormEvent) => void;

@@ -1,5 +1,11 @@
 import { cn } from '@coinbase/onchainkit/theme';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  // useMemo,
+  useRef,
+  useState
+} from 'react';
 import useChat from '../hooks/useChat';
 import type { AgentMessage, StreamEntry } from '../types';
 import { markdownToPlainText } from '../utils';
@@ -9,8 +15,8 @@ import StreamItem from './StreamItem';
 
 type ChatProps = {
   className?: string;
-  getNFTs: () => void;
-  getTokens: () => void;
+  // getNFTs: () => void;
+  // getTokens: () => void;
   conversationId: string;
 };
 
@@ -34,13 +40,13 @@ async function fetchConversationHistory(conversationId: string): Promise<Convers
   return data.messages;
 }
 
-export default function Chat({ className, getNFTs, getTokens, conversationId }: ChatProps) {
+export default function Chat({ className, /*getNFTs, getTokens, */conversationId }: ChatProps) {
   const [userInput, setUserInput] = useState('');
   const [streamEntries, setStreamEntries] = useState<StreamEntry[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 
-  const [shouldRefetchNFTs, setShouldRefetchNFTs] = useState(false);
-  const [shouldRefetchTokens, setShouldRefetchTokens] = useState(false);
+  // const [shouldRefetchNFTs, setShouldRefetchNFTs] = useState(false);
+  // const [shouldRefetchTokens, setShouldRefetchTokens] = useState(false);
 
   useEffect(() => {
     async function loadConversationHistory() {
@@ -64,19 +70,19 @@ export default function Chat({ className, getNFTs, getTokens, conversationId }: 
     loadConversationHistory();
   }, [conversationId]);
 
-  useEffect(() => {
-    if (shouldRefetchNFTs) {
-      getNFTs();
-      setShouldRefetchNFTs(false);
-    }
-  }, [getNFTs, shouldRefetchNFTs]);
+  // useEffect(() => {
+  //   if (shouldRefetchNFTs) {
+  //     getNFTs();
+  //     setShouldRefetchNFTs(false);
+  //   }
+  // }, [getNFTs, shouldRefetchNFTs]);
 
-  useEffect(() => {
-    if (shouldRefetchTokens) {
-      getTokens();
-      setShouldRefetchTokens(false);
-    }
-  }, [getTokens, shouldRefetchTokens]);
+  // useEffect(() => {
+  //   if (shouldRefetchTokens) {
+  //     getTokens();
+  //     setShouldRefetchTokens(false);
+  //   }
+  // }, [getTokens, shouldRefetchTokens]);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -84,10 +90,10 @@ export default function Chat({ className, getNFTs, getTokens, conversationId }: 
     const functions =
       messages?.find((msg) => msg.event === 'tools')?.functions || [];
     if (functions?.includes('deploy_nft')) {
-      setShouldRefetchNFTs(true);
+      // setShouldRefetchNFTs(true);
     }
     if (functions?.includes('deploy_token')) {
-      setShouldRefetchTokens(true);
+      // setShouldRefetchTokens(true);
     }
 
     let message = messages.find((res) => res.event === 'agent');
