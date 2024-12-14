@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useChat from '../hooks/useChat';
 import type { AgentMessage, StreamEntry } from '../types';
 import { generateUUID, markdownToPlainText } from '../utils';
+import { API_URL } from '../config';
 import ChatInput from './ChatInput';
 import StreamItem from './StreamItem';
 
@@ -12,15 +13,56 @@ type ChatProps = {
   getTokens: () => void;
 };
 
+interface ConversationMessage {
+  role: 'human' | 'agent';
+  content: string;
+}
+
+function mapMessageToStreamEntry(message: ConversationMessage): StreamEntry {
+  return {
+    timestamp: new Date(),
+    content: message.content,
+    type: message.role === 'human' ? 'user' : 'agent',
+  };
+}
+
+async function fetchConversationHistory(conversationId: string): Promise<ConversationMessage[]> {
+  const response = await fetch(`${API_URL}/api/conversations/${conversationId}`);
+  if (!response.ok) throw new Error('Failed to fetch conversation history');
+  const data = await response.json();
+  return data.messages;
+}
+
 export default function Chat({ className, getNFTs, getTokens }: ChatProps) {
   const [userInput, setUserInput] = useState('');
   const [streamEntries, setStreamEntries] = useState<StreamEntry[]>([]);
-  const conversationId = useMemo(() => {
-    return generateUUID();
-  }, []);
+  const conversationId = useMemo(() => generateUUID(), []);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 
   const [shouldRefetchNFTs, setShouldRefetchNFTs] = useState(false);
   const [shouldRefetchTokens, setShouldRefetchTokens] = useState(false);
+
+  useEffect(() => {
+    async function loadConversationHistory() {
+      try {
+        const messages = await fetchConversationHistory(conversationId);
+        const entries: StreamEntry[] = messages.map(mapMessageToStreamEntry);
+        setStreamEntries(entries);
+      } catch (error) {
+        console.error('Failed to load conversation history:', error);
+        // Fall back to default message on error
+        setStreamEntries([{
+          timestamp: new Date(),
+          content: "Hi! I'm your AI assistant. I can help you deploy NFTs and tokens. What would you like to do?",
+          type: 'agent',
+        }]);
+      } finally {
+        setIsLoadingHistory(false);
+      }
+    }
+
+    loadConversationHistory();
+  }, [conversationId]);
 
   useEffect(() => {
     if (shouldRefetchNFTs) {
@@ -115,14 +157,20 @@ export default function Chat({ className, getNFTs, getTokens }: ChatProps) {
     >
       <div className="flex grow flex-col overflow-y-auto p-4 pb-20">
         <p className="text-zinc-500">What&apos;s on your mind...</p>
-        <div className="mt-4 space-y-2" role="log" aria-live="polite">
-          {streamEntries.map((entry, index) => (
-            <StreamItem
-              key={`${entry.timestamp.toDateString()}-${index}`}
-              entry={entry}
-            />
-          ))}
-        </div>
+        {isLoadingHistory ? (
+          <div className="flex items-center justify-center p-4">
+            <span className="loading loading-spinner loading-md"></span>
+          </div>
+        ) : (
+          <div className="mt-4 space-y-2" role="log" aria-live="polite">
+            {streamEntries.map((entry, index) => (
+              <StreamItem
+                key={`${entry.timestamp.toDateString()}-${index}`}
+                entry={entry}
+              />
+            ))}
+          </div>
+        )}
 
         <div className="mt-3" ref={bottomRef} />
       </div>
@@ -132,7 +180,7 @@ export default function Chat({ className, getNFTs, getTokens }: ChatProps) {
         handleKeyPress={handleKeyPress}
         handleSubmit={handleSubmit}
         setUserInput={setUserInput}
-        disabled={isLoading}
+        disabled={isLoading || isLoadingHistory}
       />
     </div>
   );
