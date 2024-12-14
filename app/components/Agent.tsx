@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 // import type { Address } from 'viem';
 // import useGetNFTs from '../hooks/useGetNFTs';
