@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { AGENT_WALLET_ADDRESS } from '../constants';
-import AgentBalance from './AgentBalance';
+// import AgentBalance from './AgentBalance';
 import Image from 'next/image';
 
 interface AgentProfileProps {
