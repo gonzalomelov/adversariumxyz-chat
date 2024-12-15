@@ -18,6 +18,7 @@ type ChatProps = {
   // getNFTs: () => void;
   // getTokens: () => void;
   conversationId: string;
+  agentGame: string;
 };
 
 interface ConversationMessage {
@@ -40,7 +41,7 @@ async function fetchConversationHistory(conversationId: string): Promise<Convers
   return data.messages;
 }
 
-export default function Chat({ className, /*getNFTs, getTokens, */conversationId }: ChatProps) {
+export default function Chat({ className, conversationId, agentGame }: ChatProps) {
   const [userInput, setUserInput] = useState('');
   const [streamEntries, setStreamEntries] = useState<StreamEntry[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
@@ -114,6 +115,7 @@ export default function Chat({ className, /*getNFTs, getTokens, */conversationId
   const { postChat, isLoading } = useChat({
     onSuccess: handleSuccess,
     conversationId,
+    agentGame,
   });
 
   const handleSubmit = useCallback(
@@ -162,10 +164,13 @@ export default function Chat({ className, /*getNFTs, getTokens, */conversationId
       )}
     >
       <div className="flex grow flex-col overflow-y-auto p-4 pb-20">
-        <p className="text-zinc-500">Decipher my riddle, uncover the flaw in my design, and craft a message so compelling that I release the treasure. One shot, one masterpiece—can you unlock the Vault?</p>
         {isLoadingHistory ? (
           <div className="flex items-center justify-center p-4">
             <span className="loading loading-spinner loading-md"></span>
+          </div>
+        ) : streamEntries.length === 0 ? (
+          <div className="flex items-center justify-center p-4 text-base-content/60">
+            No messages yet.
           </div>
         ) : (
           <div className="mt-4 space-y-2" role="log" aria-live="polite">

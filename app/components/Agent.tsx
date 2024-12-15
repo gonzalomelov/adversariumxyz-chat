@@ -8,11 +8,12 @@ import { useState } from 'react';
 import AgentProfile from './AgentProfile';
 import Chat from './Chat';
 import { useAgentParams } from '../hooks/useAgentParams';
+import { useAgentRun } from '../hooks/useAgentRun';
 // import Navbar from './Navbar';
 // import Stream from './Stream';
 
 export default function Agent() {
-  const { conversationId } = useAgentParams();
+  const { conversationId, agentGame } = useAgentParams();
   const [
     isMobileMenuOpen,
     // setIsMobileMenuOpen
@@ -24,6 +25,12 @@ export default function Agent() {
 
   // const { getTokens } = useGetTokens({ onSuccess: setTokens });
   // const { getNFTs } = useGetNFTs({ onSuccess: setNFTs });
+
+  const { agentRun, isLoading } = useAgentRun(process.env.NEXT_PUBLIC_AGENT_CONTRACT_ADDRESS as string, agentGame);
+
+  if (isLoading) {
+    return <div className="loading loading-spinner loading-lg"></div>;
+  }
 
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-black font-mono text-[#5788FA]">
@@ -41,7 +48,10 @@ export default function Agent() {
             isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
           } fixed z-20 flex h-full w-full flex-col overflow-y-auto bg-black transition-transform duration-300 lg:relative lg:z-0 lg:w-1/3 lg:translate-x-0 lg:border-[#5788FA]/50 lg:border-r `}
         >
-          <AgentProfile />
+          <AgentProfile 
+            agentName={agentRun?.name} 
+            groupImage={agentRun?.groupImage}
+          />
           {/* <AgentAssets
             getTokens={getTokens}
             getNFTs={getNFTs}
@@ -55,6 +65,7 @@ export default function Agent() {
             // getTokens={getTokens} 
             // getNFTs={getNFTs} 
             conversationId={conversationId}
+            agentGame={agentGame}
           />
           {/* <Stream className="hidden" /> */}
         </div>

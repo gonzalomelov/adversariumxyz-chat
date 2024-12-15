@@ -53,7 +53,7 @@ export default function ChatInput({
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
             className="h-24 w-full bg-black p-2 pr-10 text-gray-300 placeholder-[#5788FA] placeholder-opacity-50 lg:h-36"
-            placeholder="Try your luck!"
+            placeholder="Write here..."
             rows={1}
           />
           <button

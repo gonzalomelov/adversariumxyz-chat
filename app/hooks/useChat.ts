@@ -13,11 +13,13 @@ type UseChatResponse = {
 type UseChatProps = {
   onSuccess: (messages: AgentMessage[]) => void;
   conversationId?: string;
+  agentGame?: string;
 };
 
 export default function useChat({
   onSuccess,
   conversationId,
+  agentGame,
 }: UseChatProps): UseChatResponse {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,6 +36,7 @@ export default function useChat({
           body: JSON.stringify({
             input,
             conversation_id: conversationId || generateUUID(),
+            agent_game: agentGame,
           }),
         });
 
@@ -64,7 +67,7 @@ export default function useChat({
         setIsLoading(false);
       }
     },
-    [conversationId, onSuccess],
+    [conversationId, agentGame, onSuccess],
   );
 
   return { postChat, isLoading };
