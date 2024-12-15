@@ -11,6 +11,7 @@ interface AgentRun {
   responsesCount: bigint;
   max_iterations: number;
   is_finished: boolean;
+  prizePool: bigint;
 }
 
 // Define the type for the array returned by the contract
@@ -23,7 +24,8 @@ type AgentRunTuple = [
   string,    // groupId
   bigint,    // responsesCount
   number,    // max_iterations
-  boolean    // is_finished
+  boolean,    // is_finished
+  bigint,    // prizePool
 ];
 
 export function useAgentRun(contractAddress: string, runId: string) {
@@ -43,7 +45,8 @@ export function useAgentRun(contractAddress: string, runId: string) {
     groupId: agentRunArray[5],
     responsesCount: agentRunArray[6],
     max_iterations: Number(agentRunArray[7]),
-    is_finished: agentRunArray[8]
+    is_finished: agentRunArray[8],
+    prizePool: agentRunArray[9]
   } as AgentRun : undefined;
 
   return {

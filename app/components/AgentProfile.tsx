@@ -6,11 +6,13 @@ import Image from 'next/image';
 interface AgentProfileProps {
   agentName?: string;
   groupImage?: string;
+  prizePool?: bigint;
 }
 
 export default function AgentProfile({ 
   agentName = 'AI Agent',
-  groupImage
+  groupImage,
+  prizePool = BigInt(0)
 }: AgentProfileProps) {
   const [showToast, setShowToast] = useState(false);
 
@@ -32,6 +34,8 @@ export default function AgentProfile({
     )}`;
   }, []);
 
+  const formattedPrizePool = prizePool ? Number(prizePool / BigInt("1000000000000000000")) : 0;
+  
   return (
     <div className="p-4">
       <div className="flex flex-col space-y-4 py-2">
@@ -70,8 +74,7 @@ export default function AgentProfile({
               )}
             </div>
             <div className="group relative inline-flex items-center">
-              {/* <AgentBalance /> */}
-              <div className="text-sm text-zinc-500">0 ADVRS</div>
+              <div className="text-sm text-zinc-500">{formattedPrizePool} ADVRS</div>
             </div>
           </div>
         </div>

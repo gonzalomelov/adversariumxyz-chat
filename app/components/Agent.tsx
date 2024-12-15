@@ -58,6 +58,7 @@ export default function Agent() {
           <AgentProfile 
             agentName={agentRun?.name} 
             groupImage={agentRun?.groupImage}
+            prizePool={agentRun?.prizePool}
           />
           {/* <AgentAssets
             getTokens={getTokens}
