@@ -157,12 +157,12 @@ export default function Chat({ className, /*getNFTs, getTokens, */conversationId
   return (
     <div
       className={cn(
-        'flex h-full w-full flex-col border-[#5788FA]/50 md:flex md:w-1/2 md:border-r',
+        'flex h-full flex-col border-[#5788FA]/50 max-w-4xl w-full',
         className,
       )}
     >
       <div className="flex grow flex-col overflow-y-auto p-4 pb-20">
-        <p className="text-zinc-500">What&apos;s on your mind...</p>
+        <p className="text-zinc-500">Decipher my riddle, uncover the flaw in my design, and craft a message so compelling that I release the treasure. One shot, one masterpiece—can you unlock the Vault?</p>
         {isLoadingHistory ? (
           <div className="flex items-center justify-center p-4">
             <span className="loading loading-spinner loading-md"></span>
