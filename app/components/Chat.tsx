@@ -12,6 +12,7 @@ import { markdownToPlainText } from '../utils';
 import { API_URL } from '../config';
 import ChatInput from './ChatInput';
 import StreamItem from './StreamItem';
+import { useWriteContract } from 'wagmi';
 
 type ChatProps = {
   className?: string;
@@ -118,26 +119,43 @@ export default function Chat({ className, conversationId, agentGame }: ChatProps
     agentGame,
   });
 
+  const { writeContractAsync: contributeToPool } = useWriteContract();
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!userInput.trim()) {
-        return;
+      if (!userInput.trim()) return;
+
+      try {
+        await contributeToPool({
+          address: process.env.NEXT_PUBLIC_AGENT_CONTRACT_ADDRESS as `0x${string}`,
+          abi: [
+            {
+              name: 'contributeToPool',
+              type: 'function',
+              stateMutability: 'nonpayable',
+              inputs: [{ name: 'runId', type: 'uint256' }],
+              outputs: [{ type: 'bool' }]
+            }
+          ] as const,
+          functionName: 'contributeToPool',
+          args: [BigInt(agentGame)]
+        });
+
+        setUserInput('');
+        const userMessage: StreamEntry = {
+          timestamp: new Date(),
+          type: 'user',
+          content: userInput.trim(),
+        };
+        setStreamEntries((prev) => [...prev, userMessage]);
+        postChat(userInput);
+      } catch (error) {
+        console.error('Failed to contribute to pool:', error);
+        // Show error to user
       }
-
-      setUserInput('');
-
-      const userMessage: StreamEntry = {
-        timestamp: new Date(),
-        type: 'user',
-        content: userInput.trim(),
-      };
-
-      setStreamEntries((prev) => [...prev, userMessage]);
-
-      postChat(userInput);
     },
-    [postChat, userInput],
+    [postChat, userInput, contributeToPool, agentGame],
   );
 
   const handleKeyPress = useCallback(
