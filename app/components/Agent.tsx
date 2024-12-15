@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useAccount } from 'wagmi';
 // import type { Address } from 'viem';
 // import useGetNFTs from '../hooks/useGetNFTs';
 // import useGetTokens from '../hooks/useGetTokens';
 // import AgentAssets from './AgentAssets';
 import AgentProfile from './AgentProfile';
 import Chat from './Chat';
+import { WalletConnect } from './WalletConnect';
 import { useAgentParams } from '../hooks/useAgentParams';
 import { useAgentRun } from '../hooks/useAgentRun';
 // import Navbar from './Navbar';
@@ -26,6 +28,7 @@ export default function Agent() {
   // const { getTokens } = useGetTokens({ onSuccess: setTokens });
   // const { getNFTs } = useGetNFTs({ onSuccess: setNFTs });
 
+  const { isConnected } = useAccount();
   const { agentRun, isLoading } = useAgentRun(process.env.NEXT_PUBLIC_AGENT_CONTRACT_ADDRESS as string, agentGame);
 
   if (isLoading) {
@@ -40,6 +43,10 @@ export default function Agent() {
         isMobileChatOpen={isMobileChatOpen}
         setIsMobileChatOpen={setIsMobileChatOpen}
       /> */}
+
+      <div className="flex justify-end p-4">
+        <WalletConnect />
+      </div>
 
       <div className="relative flex flex-grow overflow-hidden">
         <div
@@ -61,12 +68,18 @@ export default function Agent() {
         </div>
 
         <div className="flex w-full lg:w-2/3">
-          <Chat 
-            // getTokens={getTokens} 
-            // getNFTs={getNFTs} 
-            conversationId={conversationId}
-            agentGame={agentGame}
-          />
+          {isConnected ? (
+            <Chat 
+              // getTokens={getTokens} 
+              // getNFTs={getNFTs} 
+              conversationId={conversationId}
+              agentGame={agentGame}
+            />
+          ) : (
+            <div className="flex w-full items-center justify-center">
+              <p className="text-[#5788FA]">Please connect your wallet to chat</p>
+            </div>
+          )}
           {/* <Stream className="hidden" /> */}
         </div>
 
