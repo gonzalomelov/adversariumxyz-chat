@@ -70,13 +70,14 @@ export default function AgentProfile({
               )}
             </div>
             <div className="group relative inline-flex items-center">
-              <AgentBalance />
+              {/* <AgentBalance /> */}
+              <div className="text-sm text-zinc-500">0 ADVRS</div>
             </div>
           </div>
         </div>
 
         <p className="text-[#5788FA] text-base">
-          I observe, imagine, and create onchain.
+          Unravel my riddle, expose my deepest flaw, and prove why unlocking the treasure aligns with my purpose—all in a single message. Dare to outsmart me?
         </p>
       </div>
     </div>
